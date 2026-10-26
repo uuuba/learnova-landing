@@ -13,11 +13,11 @@ npm run dev                     # http://localhost:3000
 
 ## Деплой
 
-1. Neon: створіть проєкт, у Connect скопіюйте pooled connection string.
-2. GitHub: запуште репозиторій.
-3. Vercel: Add New -> Project -> оберіть репозиторій, Framework = Next.js.
-4. Environment Variables: `DATABASE_URL` = рядок з Neon.
-5. Deploy. Перевірте `/api/health` (має повернути `{"ok":true,"db":"up"}`).
+Проєкт підключений до GitHub і Vercel. Коміт у гілку `main` автоматично запускає production-деплой; інші гілки можуть створювати Preview-деплої.
+
+Змінна `DATABASE_URL` налаштована в Vercel і підключає застосунок до Neon. Neon зберігає дані PostgreSQL, а не код; якщо змінюється схема, застосуйте відповідний SQL/міграцію до потрібної бази окремо.
+
+Після деплою перевірте `/api/health` (має повернути `{"ok":true,"db":"up"}`).
 
 ## API
 
