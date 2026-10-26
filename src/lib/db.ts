@@ -8,7 +8,7 @@ export function getSql() {
 
 let ready: Promise<void> | null = null
 
-// Створює таблицю при першому запиті, якщо `npm run db:init` ще не запускали.
+// Створює таблицю при першому запиті, якщо її ще немає.
 export function ensureLeadsTable(): Promise<void> {
   if (!ready) {
     const sql = getSql()

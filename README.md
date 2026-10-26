@@ -7,7 +7,6 @@ Next.js 15 + TypeScript. Заявки з форми зберігаються в 
 ```bash
 npm install
 cp .env.example .env.local      # вставте DATABASE_URL з Neon
-npm run db:init                 # створює таблицю leads (необовʼязково, API створить її сам)
 npm run dev                     # http://localhost:3000
 ```
 
