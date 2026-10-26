@@ -94,7 +94,8 @@ small { color: var(--mu); }
 .ib:hover { border-color: var(--ac); }
 
 .hero { padding: 80px 0 64px; }
-.hero-in { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items: center; }
+.hero-in { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 56px; align-items: center; }
+.hero-copy, .rec { min-width: 0; }
 .hero h1 { font-size: clamp(36px, 5vw, 58px); line-height: 1.06; letter-spacing: -0.025em; font-weight: 800; max-width: 13em; }
 .lead { margin-top: 18px; font-size: 18px; color: var(--mu); max-width: 36em; }
 .hero .row { margin-top: 30px; }
@@ -116,7 +117,7 @@ small { color: var(--mu); }
 .why p { color: var(--mu); margin-top: 2px; }
 
 .stats { background: var(--alt); }
-.stats-in { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding-block: 32px; }
+.stats-in { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; padding-block: 32px; }
 .stats strong { display: block; font-size: 36px; line-height: 1.1; font-weight: 800; color: var(--deep); }
 .stats span { font-size: 14px; color: var(--mu); }
 
@@ -175,17 +176,36 @@ small { color: var(--mu); }
 .foot-in small { color: var(--foot-tx); opacity: 0.7; }
 
 @media (max-width: 980px) {
-  .grid4, .courses, .steps { grid-template-columns: repeat(2, 1fr); }
-  .stats-in { grid-template-columns: 1fr; gap: 16px; }
+  .wrap { padding-right: 20px; padding-left: 20px; }
+  .grid4, .courses, .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hero-in { grid-template-columns: 1fr; gap: 36px; }
-  .nav { display: none; }
+  .topbar-in { flex-wrap: wrap; padding-top: 12px; padding-bottom: 12px; }
+  .nav {
+    order: 3;
+    display: flex;
+    width: 100%;
+    margin-left: 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .nav a { flex: 0 0 auto; }
   .tools { margin-left: auto; }
 }
 @media (max-width: 560px) {
   .grid4, .courses, .steps { grid-template-columns: 1fr; }
-  .hero { padding-top: 40px; }
+  .wrap { padding-right: 16px; padding-left: 16px; }
+  .topbar-in { gap: 10px 12px; }
+  .tools { width: 100%; justify-content: flex-end; }
+  .nav { margin-right: -16px; padding-right: 16px; }
+  .hero { padding: 40px 0 48px; }
+  .hero-in { gap: 28px; }
+  .hero .row .b { flex: 1 1 145px; }
+  .stats-in { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding-block: 24px; }
+  .stats strong { font-size: 30px; }
   .sec { padding: 60px 0; }
-  .cta-box { padding: 28px 22px; }
+  .grid4 { margin-top: 28px; }
+  .steps { gap: 24px; }
+  .cta-box { padding: 28px 20px; }
   .bars li { grid-template-columns: 74px 1fr 42px; }
 }
 @media (prefers-reduced-motion: reduce) {
