@@ -179,6 +179,8 @@ small { color: var(--mu); }
   .wrap { padding-right: 20px; padding-left: 20px; }
   .grid4, .courses, .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hero-in { grid-template-columns: 1fr; gap: 36px; }
+}
+@media (max-width: 860px) {
   .topbar-in { flex-wrap: wrap; padding-top: 12px; padding-bottom: 12px; }
   .nav {
     order: 3;
@@ -186,8 +188,9 @@ small { color: var(--mu); }
     width: 100%;
     margin-left: 0;
     overflow-x: auto;
-    scrollbar-width: thin;
+    scrollbar-width: none;
   }
+  .nav::-webkit-scrollbar { display: none; }
   .nav a { flex: 0 0 auto; }
   .tools { margin-left: auto; }
 }
@@ -195,7 +198,7 @@ small { color: var(--mu); }
   .grid4, .courses, .steps { grid-template-columns: 1fr; }
   .wrap { padding-right: 16px; padding-left: 16px; }
   .topbar-in { gap: 10px 12px; }
-  .tools { width: 100%; justify-content: flex-end; }
+  .tools { width: auto; justify-content: flex-end; }
   .nav { margin-right: -16px; padding-right: 16px; }
   .hero { padding: 40px 0 48px; }
   .hero-in { gap: 28px; }
