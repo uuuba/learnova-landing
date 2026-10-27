@@ -1,3 +1,4 @@
+import { logCmsFailure } from '@/cms/diagnostics'
 import { cmsEnabled, getCms } from '@/cms/client'
 import { NextResponse } from 'next/server'
 import { getSql } from '@/lib/db'
@@ -15,7 +16,7 @@ export async function GET() {
     await sql`SELECT 1`
     return NextResponse.json({ ok: true, db: 'up' })
   } catch (error) {
-    console.error('[health] Database unavailable; check DATABASE_URL and CMS migrations')
+    logCmsFailure('health', error)
     return NextResponse.json({ ok: false, db: 'down' }, { status: 503 })
   }
 }

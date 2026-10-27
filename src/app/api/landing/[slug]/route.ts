@@ -1,3 +1,4 @@
+import { logCmsFailure } from '@/cms/diagnostics'
 import { getCms, cmsEnabled } from '@/cms/client'
 import { toLanding } from '@/cms/landing'
 import { failure } from '@/lib/landing-api'
@@ -16,8 +17,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     const data = toLanding(result.docs[0], site)
     if (!isLandingPage(data)) throw new Error('CMS page structure is invalid')
     return Response.json({ ok: true, data })
-  } catch {
-    console.error('[landing] CMS query failed')
+  } catch (error) {
+    logCmsFailure('landing', error)
     return Response.json(failure('server', 500, 'Unable to load page'), { status: 500 })
   }
 }
