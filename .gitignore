@@ -10,3 +10,7 @@ next-env.d.ts
 
 .vercel
 .env*
+
+media/
+test-results/
+playwright-report/

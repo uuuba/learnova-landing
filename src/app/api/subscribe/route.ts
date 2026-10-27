@@ -1,3 +1,4 @@
+import { cmsEnabled, getCms } from '@/cms/client'
 import { NextResponse } from 'next/server'
 import { ensureLeadsTable, getSql } from '@/lib/db'
 import { parseLead } from '@/lib/validate'
@@ -21,6 +22,19 @@ export async function POST(request: Request) {
   if (!lead) return NextResponse.json({ ok: false, code: 'validation' }, { status: 400 })
 
   try {
+    if (cmsEnabled()) {
+      const payload = await getCms()
+      const existing = await payload.find({ collection: 'leads', where: { email: { equals: lead.email } }, limit: 1, overrideAccess: true })
+      if (existing.totalDocs) return NextResponse.json({ ok: false, code: 'duplicate' }, { status: 409 })
+      try {
+        await payload.create({ collection: 'leads', data: { ...lead, source: 'landing' }, overrideAccess: true })
+      } catch (error) {
+        const duplicate = await payload.find({ collection: 'leads', where: { email: { equals: lead.email } }, limit: 1, overrideAccess: true })
+        if (duplicate.totalDocs) return NextResponse.json({ ok: false, code: 'duplicate' }, { status: 409 })
+        throw error
+      }
+      return NextResponse.json({ ok: true }, { status: 201 })
+    }
     await ensureLeadsTable()
     const sql = getSql()
     const rows = await sql`
@@ -31,7 +45,7 @@ export async function POST(request: Request) {
     if (rows.length === 0) return NextResponse.json({ ok: false, code: 'duplicate' }, { status: 409 })
     return NextResponse.json({ ok: true }, { status: 201 })
   } catch (error) {
-    console.error('[subscribe]', error)
+    console.error('[subscribe] Database operation failed')
     return NextResponse.json({ ok: false, code: 'server' }, { status: 500 })
   }
 }
