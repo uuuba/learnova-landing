@@ -1,16 +1,19 @@
 'use client'
 
+import type { SiteSettings } from '@/lib/types'
 import { useEffect, useState } from 'react'
 import { Icon } from './Icon'
 import { useApp } from './Providers'
 import { LANGS } from '@/lib/content'
 
-export function Header() {
+export function Header({ site }: { site?: SiteSettings } = {}) {
   const { t, lang, setLang, theme, toggleTheme } = useApp()
+  const nav = site ? site.nav.map(item => ({ label: item.label, id: item.href.slice(1) })) : t.nav
+  const navKey = JSON.stringify(nav)
   const [active, setActive] = useState<string>('')
 
   useEffect(() => {
-    const sections = t.nav
+    const sections = nav
       .map((item) => document.getElementById(item.id))
       .filter((el): el is HTMLElement => el !== null)
 
@@ -33,18 +36,18 @@ export function Header() {
       observer.disconnect()
       window.removeEventListener('scroll', onScroll)
     }
-  }, [t])
+  }, [navKey])
 
   return (
     <header className="topbar">
       <div className="wrap topbar-in">
-        <a className="logo" href="#top" aria-label="Skill Nova">
+        <a className="logo" href="#top" aria-label={site?.brand ?? "Skill Nova"}>
           <i />
-          Skill Nova
+          {site?.brand ?? "Skill Nova"}
         </a>
 
         <nav className="nav" aria-label="Main">
-          {t.nav.map((item) => (
+          {nav.map((item) => (
             <a
               key={item.id}
               href={`#${item.id}`}

@@ -1,13 +1,14 @@
 'use client'
 
 import Image from 'next/image'
+import type { Copy } from '@/lib/content'
 import { useApp } from './Providers'
 
 const DEMO_SCORES = [36, 26, 17, 8]
 
-export function Hero() {
+export function Hero({ data, image }: { data?: Copy['hero']; image?: { url: string; alt: string } } = {}) {
   const { t } = useApp()
-  const h = t.hero
+  const h = data ?? t.hero
   const total = DEMO_SCORES.reduce((a, b) => a + b, 0)
 
   return (
@@ -27,7 +28,7 @@ export function Hero() {
         </div>
 
         <article className="rec" aria-label={h.cardTitle}>
-          <Image src="/img/eng.jpg" alt="" width={560} height={300} priority className="rec-img" />
+          <Image src={image?.url ?? "/img/eng.jpg"} alt={image?.alt ?? ""} width={560} height={300} priority className="rec-img" unoptimized={Boolean(image)} />
           <div className="rec-body">
             <div className="rec-head">
               <div>

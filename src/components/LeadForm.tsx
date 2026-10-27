@@ -1,13 +1,14 @@
 'use client'
 
+import type { Copy } from '@/lib/content'
 import { useState } from 'react'
 import { useApp } from './Providers'
 
 type Status = 'idle' | 'sending' | 'ok' | 'duplicate' | 'invalid' | 'error'
 
-export function LeadForm() {
+export function LeadForm({ data }: { data?: Copy['form'] } = {}) {
   const { t, lang } = useApp()
-  const f = t.form
+  const f = data ?? t.form
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [website, setWebsite] = useState('')

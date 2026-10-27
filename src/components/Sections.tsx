@@ -1,16 +1,19 @@
 'use client'
 
+import type { Copy } from '@/lib/content'
+import type { SiteSettings } from '@/lib/types'
 import Image from 'next/image'
 import { Icon } from './Icon'
 import { LeadForm } from './LeadForm'
 import { useApp } from './Providers'
 
-export function Stats() {
+export function Stats({ data }: { data?: Copy['stats'] } = {}) {
   const { t } = useApp()
+  const content = data ?? t.stats
   return (
     <section className="stats" aria-label="Skill Nova">
       <div className="wrap stats-in">
-        {t.stats.map((s) => (
+        {content.map((s) => (
           <div key={s.label}>
             <strong>{s.value}</strong>
             <span>{s.label}</span>
@@ -21,14 +24,15 @@ export function Stats() {
   )
 }
 
-export function Features() {
+export function Features({ data }: { data?: Copy['features'] } = {}) {
   const { t } = useApp()
+  const content = data ?? t.features
   return (
     <section className="sec" id="features">
       <div className="wrap">
-        <h2 className="sec-title">{t.features.title}</h2>
+        <h2 className="sec-title">{content.title}</h2>
         <div className="grid4">
-          {t.features.items.map((item) => (
+          {content.items.map((item) => (
             <article key={item.title} className="card">
               <span className="ico">
                 <Icon name={item.icon} />
@@ -43,14 +47,15 @@ export function Features() {
   )
 }
 
-export function How() {
+export function How({ data }: { data?: Copy['how'] } = {}) {
   const { t } = useApp()
+  const content = data ?? t.how
   return (
     <section className="sec sec-alt" id="how">
       <div className="wrap">
-        <h2 className="sec-title">{t.how.title}</h2>
+        <h2 className="sec-title">{content.title}</h2>
         <ol className="steps">
-          {t.how.items.map((step, i) => (
+          {content.items.map((step, i) => (
             <li key={step.title}>
               <span className="num">{i + 1}</span>
               <h3>{step.title}</h3>
@@ -63,15 +68,16 @@ export function How() {
   )
 }
 
-export function Courses() {
+export function Courses({ data }: { data?: Copy['courses'] } = {}) {
   const { t } = useApp()
+  const content = data ?? t.courses
   return (
     <section className="sec sec-alt" id="courses">
       <div className="wrap">
-        <h2 className="sec-title">{t.courses.title}</h2>
-        <p className="lead">{t.courses.lead}</p>
+        <h2 className="sec-title">{content.title}</h2>
+        <p className="lead">{content.lead}</p>
         <div className="grid4 courses">
-          {t.courses.items.map((c) => (
+          {content.items.map((c) => (
             <article key={c.title} className="course">
               <Image src={c.img} alt="" width={420} height={240} />
               <div>
@@ -86,14 +92,15 @@ export function Courses() {
   )
 }
 
-export function Faq() {
+export function Faq({ data }: { data?: Copy['faq'] } = {}) {
   const { t } = useApp()
+  const content = data ?? t.faq
   return (
     <section className="sec" id="faq">
       <div className="wrap narrow">
-        <h2 className="sec-title">{t.faq.title}</h2>
+        <h2 className="sec-title">{content.title}</h2>
         <div className="faq">
-          {t.faq.items.map((item) => (
+          {content.items.map((item) => (
             <details key={item.q}>
               <summary>
                 {item.q}
@@ -108,28 +115,31 @@ export function Faq() {
   )
 }
 
-export function Subscribe() {
+export function Subscribe({ data }: { data?: Copy['form'] } = {}) {
   const { t } = useApp()
+  const content = data ?? t.form
   return (
     <section className="sec cta" id="subscribe">
       <div className="wrap narrow">
         <div className="cta-box">
-          <h2 className="sec-title">{t.form.title}</h2>
-          <p className="lead">{t.form.lead}</p>
-          <LeadForm />
+          <h2 className="sec-title">{content.title}</h2>
+          <p className="lead">{content.lead}</p>
+          <LeadForm data={content} />
         </div>
       </div>
     </section>
   )
 }
 
-export function Footer() {
+export function Footer({ site }: { site?: SiteSettings } = {}) {
   const { t } = useApp()
   return (
     <footer className="foot">
       <div className="wrap foot-in">
-        <p>{t.footer}</p>
-        <small>© 2026 Skill Nova</small>
+        <p>{site?.footer ?? t.footer}</p>
+        <small>© 2026 {site?.brand ?? "Skill Nova"}</small>
+        {site?.contacts && <p>{site.contacts}</p>}
+        {site?.socials.map(social => <a key={social.url} href={social.url} rel="noopener noreferrer">{social.label}</a>)}
       </div>
     </footer>
   )
